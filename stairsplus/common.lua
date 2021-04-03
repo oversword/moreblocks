@@ -133,7 +133,6 @@ stairsplus.remove_and_ignore = function(category, alternate, modname, subname, r
 	local name = modname.. ":" .. category .. "_" .. subname .. alternate
 	ignored_nodes[name] = true
 	if minetest.registered_nodes[name] then
-		minetest.registered_nodes[name] = nil
 		minetest.unregister_item(name)
 	end
 end
