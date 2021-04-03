@@ -34,6 +34,8 @@ function stairsplus:register_slope_alias_force(modname_old, subname_old, modname
 end
 
 function stairsplus:register_slope(modname, subname, recipeitem, fields)
+	if circular_saw.ignored_nodes[recipeitem] then return end
+
 	local defs = table.copy(stairsplus.defs["slope"])
 	for alternate, def in pairs(defs) do
 		stairsplus.register_single("slope", alternate, def, modname, subname, recipeitem, fields)

@@ -34,6 +34,8 @@ function stairsplus:register_micro_alias_force(modname_old, subname_old, modname
 end
 
 function stairsplus:register_micro(modname, subname, recipeitem, fields)
+	if circular_saw.ignored_nodes[recipeitem] then return end
+
 	local defs = table.copy(stairsplus.defs["micro"])
 	for alternate, def in pairs(defs) do
 		stairsplus.register_single("micro", alternate, def, modname, subname, recipeitem, fields)

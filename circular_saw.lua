@@ -20,6 +20,7 @@ circular_saw.known_stairs = setmetatable({}, {
 
 -- This is populated by stairsplus:register_all:
 circular_saw.known_nodes = {}
+circular_saw.ignored_nodes = {}
 
 -- How many microblocks does this shape at the output inventory cost:
 -- It may cause slight loss, but no gain.
@@ -279,7 +280,7 @@ function circular_saw.allow_metadata_inventory_put(
 			end
 		end
 		for name, t in pairs(circular_saw.known_nodes) do
-			if name == stackname and inv:room_for_item("input", stack) then
+			if t and name == stackname and inv:room_for_item("input", stack) then
 				return count
 			end
 		end

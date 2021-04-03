@@ -34,6 +34,8 @@ function stairsplus:register_slab_alias_force(modname_old, subname_old, modname_
 end
 
 function stairsplus:register_slab(modname, subname, recipeitem, fields)
+	if circular_saw.ignored_nodes[recipeitem] then return end
+
 	local defs = table.copy(stairsplus.defs["slab"])
 	for alternate, shape in pairs(defs) do
 		stairsplus.register_single("slab", alternate, shape, modname, subname, recipeitem, fields)

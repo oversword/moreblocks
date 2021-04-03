@@ -34,6 +34,8 @@ function stairsplus:register_panel_alias_force(modname_old, subname_old, modname
 end
 
 function stairsplus:register_panel(modname, subname, recipeitem, fields)
+	if circular_saw.ignored_nodes[recipeitem] then return end
+
 	local defs = table.copy(stairsplus.defs["panel"])
 	for alternate, def in pairs(defs) do
 		stairsplus.register_single("panel", alternate, def, modname, subname, recipeitem, fields)

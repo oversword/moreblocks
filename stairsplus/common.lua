@@ -118,7 +118,29 @@ stairsplus.rotate_node_aux = function(itemstack, placer, pointed_thing)
 	return minetest.item_place(itemstack, placer, pointed_thing, p2)
 end
 
+stairsplus.remove_all_and_ignore = function(modname, subname, recipeitem)
+	circular_saw.ignored_nodes[recipeitem] = {modname,subname}
+	circular_saw.known_nodes[recipeitem] = nil
+	for category, alternates in pairs(stairsplus.defs) do
+		for alternate, def in pairs(alternates) do
+			stairsplus.remove_and_ignore(category, alternate, modname, subname, recipeitem)
+		end
+	end
+end
+
+local ignored_nodes = {}
+stairsplus.remove_and_ignore = function(category, alternate, modname, subname, recipeitem)
+	local name = modname.. ":" .. category .. "_" .. subname .. alternate
+	if minetest.registered_nodes[name] then
+		minetest.registered_nodes[name] = nil
+		ignored_nodes[name] = true
+		minetest.unregister_item(name)
+	end
+end
+
 stairsplus.register_single = function(category, alternate, info, modname, subname, recipeitem, fields)
+	local name = modname.. ":" .. category .. "_" .. subname .. alternate
+	if ignored_nodes[name] then return end
 	local src_def = minetest.registered_nodes[recipeitem] or {}
 	local desc_base = descriptions[category]:format(fields.description)
 	local def = {}
@@ -175,6 +197,6 @@ stairsplus.register_single = function(category, alternate, info, modname, subnam
 		def.drop = modname.. ":" .. category .. "_" .. fields.drop .. alternate
 	end
 
-	minetest.register_node(":" ..modname.. ":" .. category .. "_" .. subname .. alternate, def)
+	minetest.register_node(":" .. name, def)
 	stairsplus.register_recipes(category, alternate, modname, subname, recipeitem)
 end
