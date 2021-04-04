@@ -21,11 +21,19 @@ then
 	stairsplus.expect_infinite_stacks = true
 end
 
+local do_not_copy_groups = {
+	wood = true,
+	stone = true,
+	wool = true,
+	tree = true,
+	marble = true
+}
+
 function stairsplus:prepare_groups(groups)
 	local result = {}
 	if groups then
 		for k, v in pairs(groups) do
-			if k ~= "wood" and k ~= "stone" and k ~= "wool" and k ~= "tree" then
+			if not do_not_copy_groups[k] then
 				result[k] = v
 			end
 		end
