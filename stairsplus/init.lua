@@ -26,7 +26,8 @@ local do_not_copy_groups = {
 	stone = true,
 	wool = true,
 	tree = true,
-	marble = true
+	marble = true,
+	leaves = true
 }
 
 function stairsplus:prepare_groups(groups)
