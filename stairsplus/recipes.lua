@@ -380,12 +380,6 @@ stairsplus.register_recipes = function(category, alternate, modname, subname, re
 				output = modname .. ":stair_" .. subname,
 				recipe = {modname .. ":micro_" .. subname, modname .. ":micro_" .. subname, modname .. ":micro_" .. subname, modname .. ":micro_" .. subname, modname .. ":micro_" .. subname, modname .. ":micro_" .. subname},
 			})
-
-			minetest.register_craft({
-				type = "shapeless",
-				output = modname .. ":stair_" .. subname,
-				recipe = {modname .. ":panel_" .. subname, modname .. ":panel_" .. subname, modname .. ":panel_" .. subname},
-			})
 		elseif alternate == "_inner" then
 			minetest.register_craft({
 				type = "shapeless",
