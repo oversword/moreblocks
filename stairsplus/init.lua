@@ -47,7 +47,7 @@ end
 
 local function get_tile(node_def, index)
 	if not index then index = 1 end
-	return 
+	return
 		((node_def.tiles and node_def.tiles[index] and
 			(node_def.tiles[index].name or node_def.tiles[index]))
 		or (node_def.tile_images and node_def.tile_images[index]))
