@@ -53,6 +53,30 @@ local function get_tile(node_def, index)
 		or (node_def.tile_images and node_def.tile_images[index]))
 end
 
+local function recipe_registered_to_register(existing_recipe)
+	local recipe_obj = {
+		output = existing_recipe.output,
+	}
+	if existing_recipe.type == "normal" and existing_recipe.width == 0 then
+		recipe_obj.type = "shapeless"
+		recipe_obj.recipe = existing_recipe.items
+	elseif existing_recipe.type == "cooking" then
+		recipe_obj.type = "cooking"
+		recipe_obj.recipe = existing_recipe.items[1]
+	elseif existing_recipe.type == "normal" then
+		recipe_obj.recipe = {{},{},{}}
+		for x=1,3 do
+			for y=1,existing_recipe.width do
+				local p = ((x-1)*existing_recipe.width)+y
+				recipe_obj.recipe[x][y] = existing_recipe.items[p] or ""
+			end
+		end
+	else
+		minetest.log("error", "Crafting type not accounted for, tell Oversword: "..dump(existing_recipe))
+	end
+	return recipe_obj
+end
+
 function stairsplus:register_all(modname, subname, recipeitem, fields, stairs_subname)
 
 	if not stairs_subname then stairs_subname = subname end
@@ -99,23 +123,10 @@ function stairsplus:register_all(modname, subname, recipeitem, fields, stairs_su
 						end
 					end
 					if standard then
-						local recipe_obj = {
-							output = existing_recipe.output,
-						}
-						if existing_recipe.width == 0 then
-							recipe_obj.type = "shapeless"
-							recipe_obj.recipe = existing_recipe.items
-						else
-							recipe_obj.recipe = {{},{},{}}
-							for x=1,3 do
-								for y=1,existing_recipe.width do
-									local p = ((x-1)*existing_recipe.width)+y
-									recipe_obj.recipe[x][y] = existing_recipe.items[p] or ""
-								end
-							end
-						end
-						table.insert(standard_recipes, recipe_obj)
+						table.insert(standard_recipes, recipe_registered_to_register(existing_recipe))
 					end
+				else
+					table.insert(standard_recipes, recipe_registered_to_register(existing_recipe))
 				end
 			end
 
